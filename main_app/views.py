@@ -20,8 +20,9 @@ def fish_index(request):
 
 def fish_details(request, fish_id):
   fish = Fish.objects.get(id=fish_id)
+  aquariums_fish_doesnt_have = Aquarium.objects.exclude(id__in = fish.aquariums.all().values_list('id'))
   feeding_form = FeedingForm()
-  return render(request, 'fish/detail.html', {'fish': fish, 'feeding_form': feeding_form})
+  return render(request, 'fish/detail.html', {'fish': fish, 'feeding_form': feeding_form, 'aquariums': aquariums_fish_doesnt_have,})
 
 class FishCreate(CreateView):
   model = Fish
@@ -60,3 +61,7 @@ class AquariumUpdate(UpdateView):
 class AquariumDelete(DeleteView):
   model = Aquarium
   success_url = '/aquarium/'
+
+def assoc_aquarium(request, fish_id, aquarium_id):
+  Fish.objects.get(id=fish_id).aquariums.add(aquarium_id)
+  return redirect('fish_details', fish_id = fish_id)

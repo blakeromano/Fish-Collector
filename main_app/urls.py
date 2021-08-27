@@ -15,5 +15,6 @@ urlpatterns = [
   path('aquarium/', views.AquariumList.as_view(), name='aquarium_index'),
   path('aquarium/<int:pk>', views.AquariumDetail.as_view(), name='aquarium_detail'),
   path('aquarium/<int:pk>/update/', views.AquariumUpdate.as_view(), name='aquarium_update'),
-  path('aquarium/<int:pk>/delete/', views.AquariumDelete.as_view(), name='aquarium_delete')
+  path('aquarium/<int:pk>/delete/', views.AquariumDelete.as_view(), name='aquarium_delete'),
+  path('fish/<int:fish_id>/assoc_aqu/<int:aquarium_id>/', views.assoc_aquarium, name='assoc_aqua'),
 ]

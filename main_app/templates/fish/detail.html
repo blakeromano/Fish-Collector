@@ -9,11 +9,7 @@
   src="https://cdn.jsdelivr.net/npm/mc-datepicker/dist/mc-calendar.min.js"
 >
 </script>
-<link 
-  rel="stylesheet" 
-  type="text/css" 
-  href="{% static 'css/cat-detail.css' %}"
-/>
+
 <script defer src="{% static 'js/fish-details.js' %}"></script>
 {% endblock %}
 {% block content %}
@@ -69,6 +65,53 @@
     {% else %}
       <p>{{ fish.name }} has never been fed 🤧</p>
     {% endif %}
+  </section>
+  <section>
+   <div class="subsection-title">
+      <h2>Aquariums</h2>
+    </div>
+    <h3>{{ fish.name }}'s Aquariums</h3>
+    <div class="subsection-content">
+      {% if fish.aquariums.count %}
+        {% for aquarium in fish.aquariums.all %}
+          <div class="toy-container">
+            <a href="{% url 'aquarium_detail' aquarium.id %}">
+            {% if aquarium.type == 'F' %}
+              <p>{{ aquarium.name }}, a fresh water </p>
+            {% else %}
+              <p>{{ aquarium.name }}, a salt water </p>
+            {% endif %}
+            </a>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="no-toys">{{fish.name}} doesn't live in any aquariums 😞</p>
+      {% endif %}
+    </div>
+    <h3>Available Aquariums</h3>
+    <div class="subsection-content">
+      {% if aquariums.count %}
+        {% for aquarium in aquariums %}
+          <div class="toy-container">
+            <a href="{% url 'aquarium_detail' aquarium.id %}">
+              {% if aquarium.type == 'F' %}
+                <p>{{ aquarium.name }}, a fresh water </p>
+              {% else %}
+                <p>{{ aquarium.name }}, a salt water </p>
+              {% endif %}
+            </a>
+            <form action="{% url 'assoc_aqua' fish.id aquarium.id %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn submit">Give {{ fish.name }} a new home</button>
+            </form>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="all-toys">
+          {{cat.name}} already has all the available aquariums 🥳
+        </p>
+      {% endif %}
+    </div>
   </section>
 </div>
 {% endblock %}
