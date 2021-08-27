@@ -1,0 +1,19 @@
+{% extends 'base.html' %} 
+{% load static %} 
+
+{% block content %}
+  
+<div class="card">
+  <div class="card-content">
+    <h2>{{ aquarium.name }}</h2>
+    {% if aquarium.type == 'F' %}
+    <p>A fresh water tank</p>
+    {% else %}
+    <p>A salt water tank</p>
+    {% endif %}
+  </div>
+</div>
+<a href="{% url 'aquarium_update' aquarium.id %}" class="btn warn">Edit</a>
+<a href="{% url 'aquarium_delete' aquarium.id %}" class="btn danger">Delete</a>
+
+{% endblock %}

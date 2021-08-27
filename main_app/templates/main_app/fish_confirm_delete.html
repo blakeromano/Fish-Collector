@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div>
+  <h1>Delete Fish</h1>
+  <h2>Are you sure you want to delete {{ object.name }}</h2>
+</div>
+<form action="" method='POST'>
+{% csrf_token %}
+  <a href="{% url 'fish_details' fish.id %}">Cancel</a>
+  <button type="submit">Yes - Delete!</button>
+</form>
+{% endblock %}

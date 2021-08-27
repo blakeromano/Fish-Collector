@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+<link 
+  href="https://cdn.jsdelivr.net/npm/mc-datepicker/dist/mc-calendar.min.css" 
+  rel="stylesheet" 
+/>
+<script 
+  src="https://cdn.jsdelivr.net/npm/mc-datepicker/dist/mc-calendar.min.js"
+>
+</script>
+<link 
+  rel="stylesheet" 
+  type="text/css" 
+  href="{% static 'css/cat-detail.css' %}"
+/>
+<script defer src="{% static 'js/fish-details.js' %}"></script>
+{% endblock %}
+{% block content %}
+<h1>Fish Details</h1>
+
+<section>
+  <div class="">
+    <h1>{{ fish.name }}</h1>
+    {% if fish.age > 0 %}
+      <h2>A {{ fish.age }} year old {{ fish.species }}</h2>
+    {% endif %}
+    <p>{{ fish.desc }}</p>
+    <div>
+    <a href="{% url 'fish_update' fish.id %}">Edit</a>
+    <a href="{% url 'fish_delete' fish.id %}">Delete</a>
+    </div>
+  </div>
+</section>
+<div class="feedings-container">
+  <h3>Add a Feeding</h3>
+  <form
+    method="post" 
+    class="subsection-content"
+    action="{% url 'add_feeding' fish.id %}"
+  >
+   {% if fish.fed_for_today %}
+      <p class="fed">{{fish.name}} has been fed today!</p>
+    {% else %}
+      <p class="unfed">{{fish.name}} might be hungry!</p>
+    {% endif %}
+    {% csrf_token %}
+    {{ feeding_form.as_p }}
+    <button type="submit" class="btn submit">Add Feeding</button>
+  </form>
+  <section class="feedings">
+    <div class="subsection-title">
+      <h2>Feedings</h2>
+    </div>
+    {% if fish.feeding_set.all.count %}
+    <table>
+      <thead>
+        <tr><th>Date</th><th>Meal</th></tr>
+      </thead>
+      <tbody>
+        {% for feeding in fish.feeding_set.all %}
+          <tr>
+            <td>{{feeding.date}}</td>
+            <td>{{feeding.get_meal_display}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+      <p>{{ fish.name }} has never been fed 🤧</p>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}
