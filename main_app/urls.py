@@ -3,7 +3,7 @@ from django.urls.resolvers import URLPattern
 from . import views
 
 urlpatterns = [
-  path('',  views.home, name='home'),
+  path('',  views.Home.as_view(), name='home'),
   path('about/', views.about, name='about'),
   path("fish/", views.fish_index, name='index'),
   path('fish/<int:fish_id>/', views.fish_details, name='fish_details'),
@@ -17,4 +17,5 @@ urlpatterns = [
   path('aquarium/<int:pk>/update/', views.AquariumUpdate.as_view(), name='aquarium_update'),
   path('aquarium/<int:pk>/delete/', views.AquariumDelete.as_view(), name='aquarium_delete'),
   path('fish/<int:fish_id>/assoc_aqu/<int:aquarium_id>/', views.assoc_aquarium, name='assoc_aqua'),
+  path('accounts/signup/', views.signup, name='signup')
 ]
